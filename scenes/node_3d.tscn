@@ -1,0 +1,107 @@
+[gd_scene load_steps=10 format=4 uid="uid://cyffvipnw0ka"]
+
+[ext_resource type="Script" uid="uid://ddy1kxqfl2jqc" path="res://scenes/world.gd" id="1_5t4e2"]
+[ext_resource type="Environment" uid="uid://n310n8afv71x" path="res://Enviro.tres" id="1_ns6u7"]
+[ext_resource type="Script" uid="uid://dqro5m6ldifpv" path="res://addons/orbit_camera/orbit_camera.gd" id="1_tyffc"]
+[ext_resource type="Script" uid="uid://csq62wyt2pnhw" path="res://scenes/csg_sphere_3d.gd" id="4_xvgsr"]
+[ext_resource type="Script" uid="uid://cwfb1qpj3c1ie" path="res://addons/ShapesAndLines/Polyline3D.gd" id="5_oqwcg"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xvgsr"]
+
+[sub_resource type="Shader" id="Shader_a6664"]
+code = "shader_type spatial;
+render_mode cull_front, unshaded;
+
+uniform float width = 10.0;
+uniform bool debug = false;
+
+vec2 rotate90Degrees(vec2 v) {
+    return vec2(-v.y, v.x);
+}
+
+void vertex() {
+	vec4 clip_position = PROJECTION_MATRIX * (MODELVIEW_MATRIX * vec4(VERTEX, 1.0));
+	
+	vec4 position_with_offset = PROJECTION_MATRIX * (MODELVIEW_MATRIX * (vec4(VERTEX, 1.0) + vec4((2.*UV.x-.5) * NORMAL/100.0, 0.)));
+	vec2 offset_direction = position_with_offset.xy / position_with_offset.w - clip_position.xy / clip_position.w;
+	
+	vec2 offset = (rotate90Degrees(normalize(offset_direction * VIEWPORT_SIZE))) / VIEWPORT_SIZE * clip_position.w * width * 2.0;
+	POSITION = clip_position + vec4(offset, 0., 0.);
+}
+
+void fragment() {
+	float xLengthOnScreen = length(vec2(1.0/dFdx(UV).x, 1.0/dFdy(UV).x));
+	
+	float uvXStretch = length(vec2(dFdx(UV).x, dFdy(UV).x));
+	float uvYStretch = length(vec2(dFdx(UV).y, dFdy(UV).y));
+	
+	ALBEDO = COLOR.rgb;
+	
+	if (COLOR.a < 1.0) {
+		ALPHA = COLOR.a;
+	}
+	
+	if (debug) {
+		float xStretch = 2.0 * uvXStretch;
+		float yStretch = 2.0 * uvYStretch;
+		float diagStretch = 2.0 * length(vec2(dFdx(UV).y + dFdx(UV).x, dFdy(UV).y + dFdy(UV).x));
+		
+		ALBEDO = vec3(UV.x, UV.y, 0.0);
+		if (UV.x < xStretch || UV.x > 1.0 - xStretch || UV.y < yStretch || UV.y > 1.0 - yStretch || abs(UV.x - (1.-UV.y)) < diagStretch/2.0) {
+			ALBEDO = vec3(1.,1.,1.);
+		}	
+	}
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_10v3s"]
+resource_local_to_scene = true
+render_priority = 0
+shader = SubResource("Shader_a6664")
+shader_parameter/width = 0.458
+shader_parameter/debug = false
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_cptob"]
+_surfaces = [{
+"aabb": AABB(0, 0, 0, 20.001, 20.001, 20.001),
+"attribute_data": PackedByteArray("AAAA/wAAAAAAAIA/AAAA/wAAgD8AAIA/AAAA/wAAAAAAAAAAAAAA/wAAgD8AAAAAAAAA/wAAAAAAAIA/AAAA/wAAgD8AAIA/AAAA/wAAAAAAAAAAAAAA/wAAgD8AAAAA"),
+"format": 34359742495,
+"index_count": 18,
+"index_data": PackedByteArray("AAABAAIAAgABAAMAAgADAAQABAADAAUABAAFAAYABgAFAAcA"),
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 8,
+"vertex_data": PackedByteArray("AAAAAAAAAAAAAAAAbxKDOm8SgzpvEoM6AACgQQAAoEEAAKBBDAKgQQwCoEEMAqBBAACgQQAAoEEAAKBBDAKgQQwCoEEMAqBBAAC8QAAAAAAAAAAAMQi8QG8SgzpvEoM6qqqqqv8//7+qqqqq/z//v6qqqqr/P/+/qqqqqv8//79ML2chk0GfukwvZyGTQZ+6TC9nIZNBn7pML2chk0Gfug==")
+}]
+
+[node name="Node3D" type="Node3D"]
+script = ExtResource("1_5t4e2")
+
+[node name="Node3D" type="Node3D" parent="."]
+
+[node name="OrbitCamera" type="Camera3D" parent="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.35654)
+environment = ExtResource("1_ns6u7")
+script = ExtResource("1_tyffc")
+ANCHOR_NODE_PATH = NodePath("..")
+metadata/_custom_type_script = "uid://dqro5m6ldifpv"
+
+[node name="World" type="Node3D" parent="."]
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="World"]
+radius = 10.0
+radial_segments = 30
+rings = 15
+material = SubResource("StandardMaterial3D_xvgsr")
+script = ExtResource("4_xvgsr")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="World"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -11.6767, 0)
+size = Vector3(100, 1, 100)
+
+[node name="Polyline3D" type="MeshInstance3D" parent="."]
+material_override = SubResource("ShaderMaterial_10v3s")
+mesh = SubResource("ArrayMesh_cptob")
+script = ExtResource("5_oqwcg")
+width = 0.458
+points = PackedVector3Array(0, 0, 0, 20, 20, 20, 5.875, 0, 0)
+metadata/_custom_type_script = "uid://cwfb1qpj3c1ie"

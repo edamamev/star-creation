@@ -1,0 +1,200 @@
+[gd_scene load_steps=2 format=3 uid="uid://bynnu08ojw3e3"]
+
+[ext_resource type="Script" uid="uid://dwvhsn3l53j0m" path="res://scenes/ui.gd" id="1_nt7q6"]
+
+[node name="UI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_nt7q6")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 383.0
+offset_bottom = 644.0
+
+[node name="Inputs" type="Control" parent="Panel"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="lblMass" type="Label" parent="Panel/Inputs"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 8.0
+offset_right = 110.0
+offset_bottom = 31.0
+text = "Mass (Msol): "
+
+[node name="sbMass" type="SpinBox" parent="Panel/Inputs/lblMass"]
+layout_mode = 0
+offset_left = 279.0
+offset_top = -4.0
+offset_right = 365.562
+offset_bottom = 27.0
+min_value = 0.01
+step = 0.001
+value = 1.0
+
+[node name="lblAge" type="Label" parent="Panel/Inputs"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 50.0
+offset_right = 89.0
+offset_bottom = 73.0
+text = "Age (Gyr): "
+
+[node name="sbAge" type="SpinBox" parent="Panel/Inputs/lblAge"]
+layout_mode = 0
+offset_left = 279.0
+offset_top = -4.0
+offset_right = 365.562
+offset_bottom = 27.0
+step = 0.001
+value = 1.0
+
+[node name="HSeparator" type="HSeparator" parent="Panel"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 84.0
+offset_right = 379.0
+offset_bottom = 91.0
+
+[node name="Outputs" type="Control" parent="Panel"]
+anchors_preset = 0
+offset_top = 97.0
+offset_right = 40.0
+offset_bottom = 137.0
+
+[node name="lblAgeMax" type="Label" parent="Panel/Outputs"]
+layout_mode = 0
+offset_left = 9.0
+offset_right = 170.0
+offset_bottom = 23.0
+text = "Maximum Age: "
+
+[node name="Label" type="Label" parent="Panel/Outputs/lblAgeMax"]
+layout_mode = 0
+offset_left = 272.0
+offset_top = 1.0
+offset_right = 312.0
+offset_bottom = 24.0
+text = "Gyr"
+
+[node name="lblLum" type="Label" parent="Panel/Outputs"]
+layout_mode = 0
+offset_left = 9.0
+offset_top = 37.0
+offset_right = 170.0
+offset_bottom = 60.0
+text = "Luminosity: "
+
+[node name="Label" type="Label" parent="Panel/Outputs/lblLum"]
+layout_mode = 0
+offset_left = 272.0
+offset_top = 1.0
+offset_right = 315.0
+offset_bottom = 24.0
+text = "SLum"
+
+[node name="lblRadius" type="Label" parent="Panel/Outputs"]
+layout_mode = 0
+offset_left = 9.0
+offset_top = 74.0
+offset_right = 170.0
+offset_bottom = 97.0
+text = "Radius: "
+
+[node name="Label" type="Label" parent="Panel/Outputs/lblRadius"]
+layout_mode = 0
+offset_left = 272.0
+offset_top = 1.0
+offset_right = 312.0
+offset_bottom = 24.0
+text = "SRad"
+
+[node name="lblDensity" type="Label" parent="Panel/Outputs"]
+layout_mode = 0
+offset_left = 11.0
+offset_top = 112.0
+offset_right = 172.0
+offset_bottom = 135.0
+text = "Density: "
+
+[node name="Label" type="Label" parent="Panel/Outputs/lblDensity"]
+layout_mode = 0
+offset_left = 272.0
+offset_top = 1.0
+offset_right = 312.0
+offset_bottom = 24.0
+text = "SDen"
+
+[node name="lblTemperature" type="Label" parent="Panel/Outputs"]
+layout_mode = 0
+offset_left = 11.0
+offset_top = 151.0
+offset_right = 172.0
+offset_bottom = 174.0
+text = "Temperature: "
+
+[node name="Label" type="Label" parent="Panel/Outputs/lblTemperature"]
+layout_mode = 0
+offset_left = 272.0
+offset_top = 1.0
+offset_right = 312.0
+offset_bottom = 24.0
+text = "K"
+
+[node name="lblHabitableMin" type="Label" parent="Panel/Outputs"]
+layout_mode = 0
+offset_left = 11.0
+offset_top = 184.0
+offset_right = 172.0
+offset_bottom = 207.0
+text = "Min Habitable Zone: "
+
+[node name="Label" type="Label" parent="Panel/Outputs/lblHabitableMin"]
+layout_mode = 0
+offset_left = 272.0
+offset_top = 1.0
+offset_right = 312.0
+offset_bottom = 24.0
+text = "AU"
+
+[node name="lblHabitableMax" type="Label" parent="Panel/Outputs"]
+layout_mode = 0
+offset_left = 11.0
+offset_top = 218.0
+offset_right = 172.0
+offset_bottom = 241.0
+text = "Max Habitable Zone: "
+
+[node name="Label" type="Label" parent="Panel/Outputs/lblHabitableMax"]
+layout_mode = 0
+offset_left = 272.0
+offset_top = 1.0
+offset_right = 312.0
+offset_bottom = 24.0
+text = "AU"
+
+[node name="lblLife" type="Label" parent="Panel/Outputs"]
+layout_mode = 0
+offset_left = 11.0
+offset_top = 251.0
+offset_right = 172.0
+offset_bottom = 274.0
+text = "Life Possibility: "
+
+[node name="Label" type="Label" parent="Panel/Outputs/lblLife"]
+layout_mode = 0
+offset_left = 272.0
+offset_top = 1.0
+offset_right = 312.0
+offset_bottom = 24.0
+text = "-"
+
+[connection signal="value_changed" from="Panel/Inputs/lblMass/sbMass" to="." method="_on_mass_value_changed"]
+[connection signal="value_changed" from="Panel/Inputs/lblAge/sbAge" to="." method="_on_current_age_value_changed"]
